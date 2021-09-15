@@ -1,0 +1,15 @@
+table,
+td {
+    border: 1px solid #333;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.bottom {
+    display: flex;
+    flex-direction: row;
+}

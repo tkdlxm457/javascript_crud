@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>javascript Intro</title>
+    <link href="table.css" rel="stylesheet" type="text/css" />
+    <script src="./index.js"></script>
+    <link rel="stylesheet" href="./index.css">
+</head>
+
+<body>
+    <form id="myForm" name="myform">
+        <input id="title" name="title" type="text" value=" "/>
+        <input id="description" name="description" type="text" value=" "/>
+        <button id="SAVE">작성</button>
+        <button id="UPDATE">수정</button>
+        <button id="DELETE">삭제</button>
+    </form> 
+
+    
+
+    <div class="container">
+        <table>
+            <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>제목</th>
+                    <th>내용</th>
+                    <th>작성일</th>
+                </tr>
+            </thead>
+            <tbody id="t_list">
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>
