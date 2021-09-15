@@ -46,6 +46,9 @@ xhr.onreadystatechange = function (e) {
 
 };
 
+// let initEventListener = () => {
+// let myForm = document.getElementById('myForm')
+// myForm.onsubmit
 // xhr.open('POST', 'http://localhost:3000/board');
 // xhr.setRequestHeader('Content-type', 'application/json');
 // xhr.send(JSON.stringify({title: '6666', description: '6666', conplete: true
@@ -60,4 +63,8 @@ xhr.onreadystatechange = function (e) {
 //         console.log("error!");
 //     }
 // }
+// }  
 
+function myFunction() {
+    document.getElementById("myForm").submit();
+  }
