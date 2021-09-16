@@ -10,13 +10,13 @@
 </head>
 
 <body>
-    <form id="myForm" name="myForm" action="/http://localhost:3000/board">
+    <form id="myForm" name="userinput" action="http://localhost:3000/board" method="POST">
         <input id="title" name="title" type="text" value=" "/>
         <input id="description" name="description" type="text" value=" "/>
-        <button id="SAVE">작성</button>
-        <button id="UPDATE">수정</button>
-        <button id="DELETE">삭제</button>
-        <input type="button" onclick="myFunction()" value="Submit form">
+        <input id="SAVE" type="submit" onClick="godata()" value="작성">
+        <button id="UPDATE" onClick="godata()">수정</button>
+        <button id="DELETE" type="submit" onClick="deletedata()">삭제</button>
+        <input type="button" onClick="godata()" value="Submit form">
     </form> 
 
     

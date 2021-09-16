@@ -6,8 +6,17 @@
 //토픽 객체
 let topic = null;
 
+window.addEventListener('DOMContentLoaded', function()
+{
+  getTopicList();
+  // initEventListener();
+});
+
+
 
 const xhr = new XMLHttpRequest();
+
+let getTopicList = ()=>{
 xhr.open('GET', 'http://localhost:3000/board');
 xhr.send();
 
@@ -31,11 +40,11 @@ xhr.onreadystatechange = function (e) {
         tr.insertCell(2).innerHTML = topiclist[i].description;
         tr.insertCell(3).innerHTML = topiclist[i].created;
 
-         var tr_id = document.getElementById(`tr_${i}`);
+         let tr_id = document.getElementById("tr_"+i);
          topic = topiclist;
-        tr_id.addEventListener('click', function(){
+         document.getElementById("tr_"+i).addEventListener('click', function(){
             console.log(`id [${topic.id}]의 행이 선택 되었습니다.`);
-            title.value = `${topic.title}`;
+            title.value = `${topic.id}`;
             description.value = `${topic.description}`;
         })
         
@@ -45,26 +54,58 @@ xhr.onreadystatechange = function (e) {
   }
 
 };
+}
 
-// let initEventListener = () => {
-// let myForm = document.getElementById('myForm')
-// myForm.onsubmit
-// xhr.open('POST', 'http://localhost:3000/board');
-// xhr.setRequestHeader('Content-type', 'application/json');
-// xhr.send(JSON.stringify({title: '6666', description: '6666', conplete: true
-// }));
+function godata(){
+  const form = document.getElementById('myForm');
+  form.submit(function(event){
+    event.preventDefault();
+    var data = $(this).serialize();
+    const methodType = event.originalEvent.submitter.id;
+    if (methodType === 'SAVE'){
+      xhr.open('POST', 'http://localhost:3000/board');
+      xhr.setRequestHeader('Content-type', 'application/json');
+      xhr.send(data);
 
-// xhr.onreadystatechange = function(e){
-//     if(xhr.readyState !== XMLHttpRequest.DONE) return;
+      xhr.onreadystatechange = function(e){
+        if(xhr.readyState !== XMLHttpRequest.DONE) return;
+    
+        if(xhr.status === 201){
+            console.log(xhr.responseText);
+        } else {
+            console.log("error!");
+        }
+    }
+    } else if (methodType === 'UPDATE'){
+      console.log(methodType)
+      xhr.open('PUT', 'http://localhost:3000/board');
+      xhr.setRequestHeader('Content-type', 'application/json');
+      xhr.send(data);
 
-//     if(xhr.status === 201){
-//         console.log(xhr.responseText);
-//     } else {
-//         console.log("error!");
-//     }
-// }
-// }  
+      xhr.onreadystatechange = function(e){
+        if(xhr.readyState !== XMLHttpRequest.DONE) return;
+    
+        if(xhr.status === 201){
+            console.log(xhr.responseText);
+        } else {
+            console.log("error!");
+        }
+    }
+    } else if (methodType === 'DELETE'){
+      console.log(topic)
+      xhr.open('DELETE', 'http://localhost:3000/board');
+      xhr.setRequestHeader('Content-type', 'application/json');
+      xhr.send(data);
 
-function myFunction() {
-    document.getElementById("myForm").submit();
-  }
+      xhr.onreadystatechange = function(e){
+        if(xhr.readyState !== XMLHttpRequest.DONE) return;
+    
+        if(xhr.status === 201){
+            console.log(xhr.responseText);
+        } else {
+            console.log("error!");
+        }
+    }
+    }
+  });
+}
