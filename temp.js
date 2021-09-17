@@ -1,3 +1,8 @@
+/*
+    1. get > 토픽목록 조회.o 
+    2. post > 작성 = 인풋박스에 쓰여진 데이터를 작성 클릭 이벤트로 값을 보낸다.
+*/
+
 //토픽 객체
 let topicId = null;
 
@@ -9,8 +14,11 @@ window.addEventListener('DOMContentLoaded', function () {
 
 const xhr = new XMLHttpRequest();
 
-function getTopicList () {
-  function callFn(e) {
+let getTopicList = () => {
+  xhr.open('GET', 'http://localhost:3000/board');
+  xhr.send();
+
+  xhr.onreadystatechange = function (e) {
 
     if (xhr.readyState !== XMLHttpRequest.DONE) return;
 
@@ -42,84 +50,73 @@ function getTopicList () {
     } else {
       console.log("Error!");
     }
-  };
 
-  httpService('GET', 'http://localhost:3000/board', undefined, callFn);
+  };
 }
 
-
-
-
-/**
- * 
- * @param {*} event 
- * @param {*} methodType 
- */
-let godata = (event, methodType) => {
-  // 이벤트 버블링을 방지한다.
+function godata(event, methodType) {
   event.preventDefault();
-
-  // form DOM
   const form = document.getElementById('myForm');
 
-  // httpRequestOption
-  const httpReqOption = {
-    methodType: null,
-    URL: null,
-    body: null
-  }
 
-  switch (methodType) {
-    case 'SAVE':
-      httpReqOption.methodType = "POST";
-      httpReqOption.URL = 'http://localhost:3000/board';
-      httpReqOption.body = JSON.stringify({ title: form.querySelector("#title").value, description: form.querySelector("#description").value });
+  if (methodType === 'SAVE') {
+    xhr.open('POST', 'http://localhost:3000/board');
+    xhr.setRequestHeader('Content-type', 'application/json');
+    xhr.send(JSON.stringify({title: form.querySelector("#title").value, description: form.querySelector("#description").value}));
+    xhr.onreadystatechange = function (e) {
+      if (xhr.readyState !== XMLHttpRequest.DONE) return;
 
-      break;
-    case 'UPDATE':
-      httpReqOption.methodType = "PUT";
-      httpReqOption.URL = 'http://localhost:3000/board/' + topicId;
-      httpReqOption.body = JSON.stringify({ title: form.querySelector("#title").value, description: form.querySelector("#description").value });
+      if (xhr.status === 201) {
+        console.log(xhr.responseText);
+      } else {
+        console.log("error!");
+      }
+    }
+  } else if (methodType === 'UPDATE') {
+    console.log(methodType)
+    
+    xhr.open('PUT', 'http://localhost:3000/board/' + topicId);
+    xhr.setRequestHeader('Content-type', 'application/json');
+    xhr.send(JSON.stringify({title: form.querySelector("#title").value, description: form.querySelector("#description").value}));
 
-      break;
-    case 'DELETE':
-      httpReqOption.methodType = "DELETE";
-      httpReqOption.URL = 'http://localhost:3000/board/' + topicId;
+    xhr.onreadystatechange = function (e) {
+      if (xhr.readyState !== XMLHttpRequest.DONE) return;
 
-      break;
-    default:
-      alert('용청가능한 http거래가 없습니다.');
-      break;
-  }
+      if (xhr.status === 201) {
+        console.log(xhr.responseText);
+      } else {
+        console.log("error!");
+      }
+    }
+  } else if (methodType === 'DELETE') {
+    console.log(topicId)
+    xhr.open('DELETE', 'http://localhost:3000/board/' + topicId);
+    xhr.setRequestHeader('Content-type', 'application/json');
+    xhr.send();
 
-    httpService(httpReqOption.methodType, httpReqOption.URL, httpReqOption.body);
-}
+    xhr.onreadystatechange = function (e) {
+      if (xhr.readyState !== XMLHttpRequest.DONE) return;
 
-
-/**
- * 
- * @param {String} httpMethod http메소드
- * @param {String}} URL URL
- * @param {Function} callFn http응답리스너
- * @param {Optional(Object)} body request body
- */
-function httpService (httpMethod, URL, body = null, callFn = undefined) {
-  xhr.open(httpMethod, URL);
-  xhr.setRequestHeader('Content-type', 'application/json');
-  body === null ? xhr.send() : xhr.send(body);
-
-  let defaultCallFn = (e) => {
-    if (xhr.readyState !== XMLHttpRequest.DONE) return;
-
-    if (xhr.status === 201) {
-      console.log(xhr.responseText);
-    } else {
-      console.log("error!");
+      if (xhr.status === 201) {
+        console.log(xhr.responseText);
+      } else {
+        console.log("error!");
+      }
     }
   }
 
-  xhr.onreadystatechange = callFn === undefined ? defaultCallFn : callFn;
+  return false;
 }
+
+
+
+
+
+
+
+
+
+
 
 
 
