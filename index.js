@@ -52,8 +52,8 @@ function getTopicList () {
 
 /**
  * 
- * @param {*} event 
- * @param {*} methodType 
+ * @param {event} event 이벤트
+ * @param {string} methodType SAVE, UPDATE, DELETE만 들어온다.
  */
 let godata = (event, methodType) => {
   // 이벤트 버블링을 방지한다.
